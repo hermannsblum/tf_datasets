@@ -31,6 +31,7 @@ from tensorflow_datasets.image.chexpert import Chexpert
 from tensorflow_datasets.image.cifar import Cifar10
 from tensorflow_datasets.image.cifar import Cifar100
 from tensorflow_datasets.image.cifar10_corrupted import Cifar10Corrupted
+from tensorflow_datasets.image.cityscapes import Cityscapes
 from tensorflow_datasets.image.clevr import CLEVR
 from tensorflow_datasets.image.cmaterdb import Cmaterdb
 from tensorflow_datasets.image.coco import Coco
