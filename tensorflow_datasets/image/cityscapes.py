@@ -34,7 +34,7 @@ _DESCRIPTION = '''\
 
 
   Besides segmentation, cityscapes also provides stereo image pairs and ground truths for disparity inference
-  tasks on both the normal and extra splits (accessible via 'cityscapes/stereo_disparity' and 
+  tasks on both the normal and extra splits (accessible via 'cityscapes/stereo_disparity' and
   'cityscapes/stereo_disparity_extra' respectively).
 
   Ingored examples:
@@ -253,16 +253,16 @@ class Cityscapes(tfds.core.GeneratorBasedBuilder):
 
         if self.builder_config.right_images:
           features['image_right'] = os.path.join(
-              paths_city_root['images_right'], f'{image_id}_rightImg8bit.png')
+              paths_city_root['images_right'], '{}_rightImg8bit.png'.format(image_id))
 
         if self.builder_config.segmentation_labels:
           features['segmentation_label'] = os.path.join(
               paths_city_root['segmentation_labels'],
-              f'{image_id}_{self.builder_config.label_suffix}.png')
+              '{}_{}.png'.format(image_id, self.builder_config.label_suffix))
 
         if self.builder_config.disparity_maps:
           features['disparity_map'] = os.path.join(
-              paths_city_root['disparity_maps'], f'{image_id}_disparity.png')
+              paths_city_root['disparity_maps'], '{}_disparity.png'.format(image_id))
 
         yield image_id, features
 
@@ -277,4 +277,4 @@ def _get_left_image_id(left_image):
     'bonn_000001_000019_leftImg8bit' -> 'bonn_000001_000019'
   '''
   match = LEFT_IMAGE_FILE_RE.match(left_image)
-  return f'{match.group(1)}_{match.group(2)}_{match.group(3)}'
+  return '{}_{}_{}'.format(*(match.group(i) for i in [1, 2, 3]))
