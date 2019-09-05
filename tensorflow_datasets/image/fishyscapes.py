@@ -75,7 +75,7 @@ class Fishyscapes(tfds.core.GeneratorBasedBuilder):
     # dl_manager is a tfds.download.DownloadManager that can be used to
     # download and extract URLs
     dl_paths = dl_manager.download({
-        #'mask': 'tbd'
+        'mask': 'http://robotics.ethz.ch/~asl-datasets/Fishyscapes/fishyscapes_lostandfound.zip',
     })
     dl_paths = dl_manager.extract(dl_paths)
 
