@@ -4,7 +4,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import tensorflow as tf
 from itertools import chain
+from os import path
+import re
 
 import tensorflow_datasets as tfds
 from tensorflow_datasets.core import api_utils
@@ -23,9 +26,10 @@ class FishyscapesConfig(tfds.core.BuilderConfig):
 
     Args:
   '''
-
   @api_utils.disallow_positional_args
-  __init__(self, base_data='lost_and_found', **kwargs):
+  def __init__(self, base_data='lost_and_found', **kwargs):
+    super().__init__(**kwargs)
+
     assert base_data in ['lost_and_found', 'cityscapes']
     self.base_data = base_data
 
@@ -37,8 +41,11 @@ class Fishyscapes(tfds.core.GeneratorBasedBuilder):
   VERSION = tfds.core.Version('0.1.0')
 
   BUILDER_CONFIGS = [
-      FishyscapesConfig()
-      ]
+      FishyscapesConfig(
+        name='Lost and Found',
+        description='Validation set based on LostAndFound images.',
+        version=VERSION,
+      )]
 
   def _info(self):
     # TODO(fishyscapes): Specifies the tfds.core.DatasetInfo object
@@ -50,6 +57,7 @@ class Fishyscapes(tfds.core.GeneratorBasedBuilder):
         features=tfds.features.FeaturesDict({
             # These are the features of your dataset like images, labels ...
             'image_id': tfds.features.Text(),
+            'basedata_id': tfds.features.Text(),
             'image_left': tfds.features.Image(shape=(1024, 2048, 3),
                                               encoding_format='png'),
             'mask': tfds.features.Image(shape=(1024, 2048, 1),
@@ -79,7 +87,7 @@ class Fishyscapes(tfds.core.GeneratorBasedBuilder):
           right_images=False,
           segmentation_labels=False,
           instance_ids=False,
-          dispartiy_maps=False,
+          disparity_maps=False,
           use_16bit=False))
 
     # manually force a downlaod and split generation for the base dataset
@@ -104,7 +112,7 @@ class Fishyscapes(tfds.core.GeneratorBasedBuilder):
       fs_id, cityscapes_id = _get_ids_from_labels_file(filename)
       features = {
         'image_id': fs_id,
-        'cityscapes_id': cityscapes_id,
+        'basedata_id': cityscapes_id,
         'mask': path.join(fishyscapes_path, filename),
         'image_left': base_images[cityscapes_id]['image_left'],
       }
