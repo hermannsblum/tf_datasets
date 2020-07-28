@@ -1,1 +1,2 @@
 from tensorflow_datasets.human_pose import mpii
+from tensorflow_datasets.human_pose import up3d
