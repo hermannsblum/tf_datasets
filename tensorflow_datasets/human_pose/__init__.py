@@ -1,1 +1,2 @@
 from tensorflow_datasets.human_pose import mpii
+from tensorflow_datasets.human_pose.pose_3dpw import Pose3DPW
