@@ -161,7 +161,7 @@ class Pose3DPW(tfds.core.GeneratorBasedBuilder):
           'cam_intrinsics': data['cam_intrinsics'],
           'sex': data['genders'][:ACTORS], 
         })
-      yield data['sequence'], frames
+      yield str(data['sequence']), frames
 
 # Helper functions
 
