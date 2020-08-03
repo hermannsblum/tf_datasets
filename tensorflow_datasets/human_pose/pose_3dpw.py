@@ -114,6 +114,18 @@ class Pose3DPW(tfds.core.GeneratorBasedBuilder):
           image_dir=path.join(extracted["images"], "imageFiles"),
           sequences=[path.join(sequences, 'train', x) for x in tf.io.gfile.listdir(path.join(sequences, 'train'))],
         )),
+      tfds.core.SplitGenerator(
+        name=tfds.Split.VALIDATION,
+        gen_kwargs=dict(
+          image_dir=path.join(extracted["images"], "imageFiles"),
+          sequences=[path.join(sequences, 'validation', x) for x in tf.io.gfile.listdir(path.join(sequences, 'validation'))],
+        )),
+      tfds.core.SplitGenerator(
+        name=tfds.Split.TEST,
+        gen_kwargs=dict(
+          image_dir=path.join(extracted["images"], "imageFiles"),
+          sequences=[path.join(sequences, 'test', x) for x in tf.io.gfile.listdir(path.join(sequences, 'test'))],
+        )),
     ]
 
   def _generate_examples(self, image_dir, sequences):
