@@ -78,23 +78,24 @@ class Pose3DPW(tfds.core.GeneratorBasedBuilder):
     return tfds.core.DatasetInfo(
       builder=self,
       description="Human-annotated 2D human poses on in-the-wild images",
-      features=tfds.features.Sequence(tfds.features.FeaturesDict({
-        "image": tfds.features.Image(encoding_format="jpeg"),
-        "filename": tfds.features.Text(),
-        "frame_sec": tfds.features.Tensor(shape=(), dtype=tf.float32),
-        # different joint attributes
-        "joints": tfds.features.Tensor(shape=(ACTORS, NUM_JOINTS, 3), dtype=tf.float64),  # original 3DPW key: jointPositions
-        "center": tfds.features.Tensor(shape=(ACTORS, 3,), dtype=tf.float64),  # original 3DPW key: trans
-        # SMPL model parameters
-        'smpl_betas': tfds.features.Tensor(shape=(ACTORS, 10), dtype=tf.float64),
-        'smpl_betas_clothed': tfds.features.Tensor(shape=(ACTORS, 10), dtype=tf.float64),
-        'smpl_poses': tfds.features.Tensor(shape=(ACTORS, 72), dtype=tf.float64),
-        # additional attributes
-        'cam_pose': tfds.features.Tensor(shape=(4, 4), dtype=tf.float64),
-        'campose_valid': tfds.features.Tensor(shape=(ACTORS, ), dtype=tf.bool),
-        'cam_intrinsics': tfds.features.Tensor(shape=(3, 3), dtype=tf.float64),
-        "sex": tfds.features.Sequence(tfds.features.Text(), length=ACTORS),  # original 3DPW key: genders
-      })),
+      features=tfds.features.FeaturesDict({
+          'cam_intrinsics': tfds.features.Tensor(shape=(3, 3), dtype=tf.float64),
+          "sex": tfds.features.Sequence(tfds.features.Text(), length=ACTORS),  # original 3DPW key: genders
+          'smpl_betas': tfds.features.Tensor(shape=(ACTORS, 10), dtype=tf.float64),
+          'smpl_betas_clothed': tfds.features.Tensor(shape=(ACTORS, 10), dtype=tf.float64),
+          "frames": tfds.features.Sequence(tfds.features.FeaturesDict({
+              "image": tfds.features.Image(encoding_format="jpeg"),
+              "filename": tfds.features.Text(),
+              "frame_sec": tfds.features.Tensor(shape=(), dtype=tf.float32),
+              # different joint attributes
+              "joints": tfds.features.Tensor(shape=(ACTORS, NUM_JOINTS, 3), dtype=tf.float64),  # original 3DPW key: jointPositions
+              "center": tfds.features.Tensor(shape=(ACTORS, 3,), dtype=tf.float64),  # original 3DPW key: trans
+              'smpl_poses': tfds.features.Tensor(shape=(ACTORS, 72), dtype=tf.float64),
+              # additional attributes
+              'cam_pose': tfds.features.Tensor(shape=(4, 4), dtype=tf.float64),
+              'campose_valid': tfds.features.Tensor(shape=(ACTORS, ), dtype=tf.bool),
+            })),
+      }),
       homepage="http://human-pose.mpi-inf.mpg.de/",
       citation=CITATION)
 
@@ -112,6 +113,18 @@ class Pose3DPW(tfds.core.GeneratorBasedBuilder):
         gen_kwargs=dict(
           image_dir=path.join(extracted["images"], "imageFiles"),
           sequences=[path.join(sequences, 'train', x) for x in tf.io.gfile.listdir(path.join(sequences, 'train'))],
+        )),
+      tfds.core.SplitGenerator(
+        name=tfds.Split.VALIDATION,
+        gen_kwargs=dict(
+          image_dir=path.join(extracted["images"], "imageFiles"),
+          sequences=[path.join(sequences, 'validation', x) for x in tf.io.gfile.listdir(path.join(sequences, 'validation'))],
+        )),
+      tfds.core.SplitGenerator(
+        name=tfds.Split.TEST,
+        gen_kwargs=dict(
+          image_dir=path.join(extracted["images"], "imageFiles"),
+          sequences=[path.join(sequences, 'test', x) for x in tf.io.gfile.listdir(path.join(sequences, 'test'))],
         )),
     ]
 
@@ -153,15 +166,18 @@ class Pose3DPW(tfds.core.GeneratorBasedBuilder):
           'frame_sec': np.float32(1.0 / 30 * frame_idx),  # video is 30 fps
           'joints': data_at_frame(data['jointPositions'], frame_idx).reshape([ACTORS, 24, 3]),
           'center': data_at_frame(data['trans'], frame_idx),
-          'smpl_betas': np.stack(betas)[:ACTORS],
-          'smpl_betas_clothed': np.stack(betas_clothed)[:ACTORS],
           'smpl_poses': data_at_frame(data['poses'], frame_idx),
           'cam_pose': data_at_frame(data['cam_poses'], frame_idx),
           'campose_valid': data_at_frame(data['campose_valid'], frame_idx).astype(bool),
-          'cam_intrinsics': data['cam_intrinsics'],
-          'sex': data['genders'][:ACTORS], 
         })
-      yield str(data['sequence']), frames
+      features = {
+          'smpl_betas': np.stack(betas)[:ACTORS],
+          'smpl_betas_clothed': np.stack(betas_clothed)[:ACTORS],
+          'sex': data['genders'][:ACTORS],
+          'cam_intrinsics': data['cam_intrinsics'],
+          'frames': frames,
+      }
+      yield str(data['sequence']), features
 
 # Helper functions
 
