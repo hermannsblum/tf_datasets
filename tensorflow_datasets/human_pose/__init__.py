@@ -16,3 +16,4 @@
 # Lint as: python3
 """Datasets for human pose estimation."""
 from tensorflow_datasets.human_pose import mpii
+from tensorflow_datasets.human_pose.pose_3dpw import Pose3DPW
