@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """The Waymo Open Dataset. See waymo.com/open."""
 
 import io
@@ -64,8 +63,9 @@ _OBJECT_LABELS = [
 class WaymoOpenDatasetConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Waymo Open Dataset Config."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, name, version_str, description, is_on_gcs=False, **kwargs):
+  def __init__(
+      self, *, name, version_str, description, is_on_gcs=False, **kwargs
+  ):
     """BuilderConfig for Waymo Open Dataset examples.
 
     Args:

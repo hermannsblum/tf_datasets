@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Imagenet datasets."""
 
 import io
@@ -38,11 +37,24 @@ millions of cleanly sorted images for most of the concepts in the WordNet
 hierarchy.
 
 The test split contains 100K images but no labels because no labels have been
-publicly released. To assess the accuracy of a model on the ImageNet test split,
-one must run inference on all images in the split, export those results to a
-text file that must be uploaded to the ImageNet evaluation server. The
-maintainers of the ImageNet evaluation server permits a single user to submit up
-to 2 submissions per week in order to prevent overfitting.
+publicly released. We provide support for the test split from 2012 with the
+minor patch released on October 10, 2019. In order to manually download this
+data, a user must perform the following operations:
+
+1. Download the 2012 test split available [here](http://www.image-net.org/challenges/LSVRC/2012/downloads.php#images).
+2. Download the October 10, 2019 patch. There is a Google Drive link to the
+patch provided on the same page.
+3. Combine the two tar-balls, manually overwriting any images in the original
+archive with images from the patch. According to the instructions on
+image-net.org, this procedure overwrites just a few images.
+
+The resulting tar-ball may then be processed by TFDS.
+
+To assess the accuracy of a model on the ImageNet test split, one must run
+inference on all images in the split, export those results to a text file that
+must be uploaded to the ImageNet evaluation server. The maintainers of the
+ImageNet evaluation server permits a single user to submit up to 2 submissions
+per week in order to prevent overfitting.
 
 To evaluate the accuracy on the test split, one must first create an account at
 image-net.org. This account must be approved by the site administrator. After
@@ -124,10 +136,9 @@ PNG_IMAGES = ['n02105855_2933.JPEG']
 class Imagenet2012(tfds.core.GeneratorBasedBuilder):
   """Imagenet 2012, aka ILSVRC 2012."""
 
-  VERSION = tfds.core.Version(
-      '5.0.0', 'New split API (https://tensorflow.org/datasets/splits)')
+  VERSION = tfds.core.Version('5.1.0', 'Added test split.')
   SUPPORTED_VERSIONS = [
-      tfds.core.Version('5.1.0'),
+      tfds.core.Version('5.0.0'),
   ]
 
   MANUAL_DOWNLOAD_INSTRUCTIONS = """\

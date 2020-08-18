@@ -1,4 +1,3 @@
-# Lint as: python3
 """tensorflow/datasets is a library of datasets ready to use with TensorFlow.
 
 tensorflow/datasets is a library of public datasets ready to use with
@@ -37,13 +36,6 @@ if nightly:
   datestring = (os.environ.get('TFDS_NIGHTLY_TIMESTAMP') or
                 datetime.datetime.now().strftime('%Y%m%d%H%M'))
   __version__ += 'dev%s' % datestring
-  entry_points = {
-      'console_scripts': [
-          'tfds = tensorflow_datasets.scripts.cli.main:launch_cli'
-      ],
-  }
-else:
-  entry_points = {}
 
 
 DOCLINES = __doc__.split('\n')
@@ -59,7 +51,6 @@ REQUIRED_PKGS = [
     'protobuf>=3.6.1',
     'requests>=2.19.0',
     'six',
-    'importlib_resources',
     'tensorflow-metadata',
     'termcolor',
     'tqdm',
@@ -70,9 +61,10 @@ REQUIRED_PKGS = [
     'futures;python_version<"3"',
     # shutil.disk_usage was introduced in Python 3.3, use psutil instead.
     'psutil;python_version<"3.3"',
-    # enum introduced in Python 3.4
+    # Standard library backports
     'enum34;python_version<"3.4"',
     'dataclasses;python_version<"3.7"',
+    'importlib_resources;python_version<"3.9"',
 ]
 
 TESTS_REQUIRE = [
@@ -206,5 +198,9 @@ setup(
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
     ],
     keywords='tensorflow machine learning datasets',
-    entry_points=entry_points,
+    entry_points={
+        'console_scripts': [
+            'tfds = tensorflow_datasets.scripts.cli.main:launch_cli'
+        ],
+    },
 )

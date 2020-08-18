@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Frames Labeled In Cinema (FLIC)."""
 
 import os
@@ -66,8 +65,7 @@ def _normalize_bbox(raw_bbox, img_path):
 class FlicConfig(tfds.core.BuilderConfig):
   """BuilderConfig for FLIC."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, data, **kwargs):
+  def __init__(self, *, data, **kwargs):
     """Constructs a FlicConfig."""
     if data not in _DATA_OPTIONS:
       raise ValueError("data must be one of %s" % _DATA_OPTIONS)

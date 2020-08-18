@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """TriviaQA: A Reading Comprehension Dataset."""
 
 import json
@@ -79,8 +78,7 @@ def _wiki_evidence_dir(tmp_dir):
 class TriviaQAConfig(tfds.core.BuilderConfig):
   """BuilderConfig for TriviaQA."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, unfiltered=False, exclude_context=False, **kwargs):
+  def __init__(self, *, unfiltered=False, exclude_context=False, **kwargs):
     """BuilderConfig for TriviaQA.
 
     Args:

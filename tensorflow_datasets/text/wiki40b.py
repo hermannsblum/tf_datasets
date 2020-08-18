@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Wiki40B: A clean Wikipedia dataset for 40+ languages."""
 
 import os
@@ -64,8 +63,7 @@ WIKIPEDIA_LANGUAGES = [
 class Wiki40bConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Wiki40B."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, language=None, **kwargs):
+  def __init__(self, *, language=None, **kwargs):
     """BuilderConfig for Wiki40B.
 
     Args:

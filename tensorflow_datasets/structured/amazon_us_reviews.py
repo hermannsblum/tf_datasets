@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Amazon Customer Reviews Dataset --- US REVIEWS DATASET."""
 
 import collections
@@ -87,8 +86,7 @@ _DL_URLS = {
 class AmazonUSReviewsConfig(tfds.core.BuilderConfig):
   """BuilderConfig for AmazonUSReviews."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, data=None, **kwargs):
+  def __init__(self, *, data=None, **kwargs):
     """Constructs a AmazonUSReviewsConfig.
 
     Args:

@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Text feature.
 
 """
@@ -25,8 +24,11 @@ import textwrap
 from absl import logging
 import tensorflow.compat.v2 as tf
 
+from tensorflow_datasets.core.deprecated import text as text_lib
 from tensorflow_datasets.core.features import feature
-from tensorflow_datasets.core.features import text as text_lib
+from tensorflow_datasets.core.utils import type_utils
+
+Json = type_utils.Json
 
 
 class Text(feature.Tensor):
@@ -36,9 +38,9 @@ class Text(feature.Tensor):
     """Constructs a Text FeatureConnector.
 
     Args:
-      encoder: `tfds.features.text.TextEncoder`, an encoder that can convert
+      encoder: `tfds.deprecated.text.TextEncoder`, an encoder that can convert
         text to integers. If None, the text will be utf-8 byte-encoded.
-      encoder_config: `tfds.features.text.TextEncoderConfig`, needed if
+      encoder_config: `tfds.deprecated.text.TextEncoderConfig`, needed if
         restoring from a file with `load_metadata`.
     """
     if encoder and encoder_config:
@@ -175,3 +177,13 @@ class Text(feature.Tensor):
     ex = html.escape(ex)
     ex = textwrap.shorten(ex, width=1000)  # Truncate long text
     return ex
+
+  @classmethod
+  def from_json_content(cls, value: Json) -> "Text":
+    del value  # Unused
+    return cls()
+
+  def to_json_content(self) -> Json:
+    if self._encoder or self._encoder_config:
+      raise ValueError("Encoder and Encoder Config should None")
+    return dict()

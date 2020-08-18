@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """BLiMP dataset with minimal pairs of grammatical phenomena in English."""
 
 import json
@@ -45,8 +44,7 @@ _DOWNLOAD_URL = 'https://raw.githubusercontent.com/alexwarstadt/blimp/master'
 class BlimpConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Blimp."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, paradigm_uid, **kwargs):
+  def __init__(self, *, paradigm_uid, **kwargs):
     """BuilderConfig for Blimp.
 
     Args:

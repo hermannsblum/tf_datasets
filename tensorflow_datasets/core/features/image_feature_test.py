@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Tests for tensorflow_datasets.core.features.image_feature."""
 
 import os
@@ -86,6 +85,7 @@ class ImageFeatureTest(
                 raise_msg='are incompatible',
             ),
         ],
+        test_attributes=dict(_encoding_format='png')
     )
 
   def test_image_shaped(self):
@@ -109,6 +109,7 @@ class ImageFeatureTest(
                 raise_msg='are incompatible',
             ),
         ],
+        test_attributes=dict(_encoding_format='png')
     )
 
 

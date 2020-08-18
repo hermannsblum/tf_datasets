@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Downsampled Imagenet dataset."""
 
 import tensorflow_datasets.public_api as tfds
@@ -51,8 +50,7 @@ _DATA_OPTIONS = ["32x32", "64x64"]
 class DownsampledImagenetConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Downsampled Imagenet."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, data=None, **kwargs):
+  def __init__(self, *, data=None, **kwargs):
     """Constructs a DownsampledImagenetConfig.
 
     Args:

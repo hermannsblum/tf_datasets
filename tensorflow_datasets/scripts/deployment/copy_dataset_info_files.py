@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 r"""Copy the info files from placer to GCS bucket.
 """
 
@@ -55,7 +54,7 @@ def copy(from_dir: str, to_dir: str) -> None:
   """Copy the info files from within `from_dir` to `to_dir`."""
   predicate_fn = lambda _: True  # All datasets
 
-  for full_name in tfds.core.registered.list_full_names(predicate_fn):
+  for full_name in tfds.core.load.list_full_names(predicate_fn):
     from_full_name_dir = os.path.join(from_dir, full_name)
     to_full_name_dir = os.path.join(to_dir, full_name)
 

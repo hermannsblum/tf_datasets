@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Dmlab dataset."""
 
 import io
@@ -24,13 +23,13 @@ import tensorflow.compat.v2 as tf
 
 import tensorflow_datasets.public_api as tfds
 
-_URL = "https://storage.googleapis.com/akolesnikov-dmlab-tfds/dmlab.tar.gz"
+_URL = "https://storage.googleapis.com/dmlab-vtab/dmlab.tar.gz"
 
 
 class Dmlab(tfds.core.GeneratorBasedBuilder):
   """Dmlab dataset."""
 
-  VERSION = tfds.core.Version("2.0.0")
+  VERSION = tfds.core.Version("2.0.1")
 
   def _info(self):
     return tfds.core.DatasetInfo(

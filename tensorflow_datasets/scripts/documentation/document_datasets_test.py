@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Test of `document_datasets.py`."""
 
 # import collections
@@ -81,7 +80,7 @@ class DocumentDatasetsTest(tfds.testing.TestCase):
     # to avoid invalid dataset errors.
     # Context: https://github.com/tensorflow/datasets/issues/1960
     cls._patch_register = mock.patch.object(
-        tfds.core.registered, 'list_full_names', return_value=[])
+        tfds.core.load, 'list_full_names', return_value=[])
     cls._patch_register.start()
 
   @classmethod

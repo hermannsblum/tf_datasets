@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 r"""Script which generates datasets figures.
 """
 
@@ -123,12 +122,12 @@ def _get_full_names(datasets: Optional[List[str]] = None) -> List[str]:
     builder_names: The builder names.
   """
   if datasets is None:
-    return tfds.core.registered.list_full_names(
+    return tfds.core.load.list_full_names(
         current_version_only=True,
     )
   else:
     builder_names = list(itertools.chain.from_iterable([
-        tfds.core.registered.single_full_names(builder_name)
+        tfds.core.load.single_full_names(builder_name)
         for builder_name in datasets
     ]))
     return builder_names

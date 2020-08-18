@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """CMATERdb dataset."""
 
 import numpy as np
@@ -88,15 +87,6 @@ CMATERdb is the pattern recognition database repository created at the 'Center f
 
 class CmaterdbConfig(tfds.core.BuilderConfig):
   """BuilderConfig for CMATERdb Config."""
-
-  @tfds.core.disallow_positional_args
-  def __init__(self, **kwargs):
-    """BuilderConfig for CMATERdb examples.
-
-    Args:
-      **kwargs: keyword arguments forwarded to super.
-    """
-    super(CmaterdbConfig, self).__init__(**kwargs)
 
 
 class Cmaterdb(tfds.core.GeneratorBasedBuilder):

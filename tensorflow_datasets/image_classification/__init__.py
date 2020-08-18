@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Image Classification datasets."""
 
 from tensorflow_datasets.image_classification.beans import Beans
@@ -49,6 +48,7 @@ from tensorflow_datasets.image_classification.imagenet2012_corrupted import Imag
 from tensorflow_datasets.image_classification.imagenet2012_real import Imagenet2012Real
 from tensorflow_datasets.image_classification.imagenet2012_subset import Imagenet2012Subset
 from tensorflow_datasets.image_classification.imagenet_a import ImagenetA
+from tensorflow_datasets.image_classification.imagenet_r import ImagenetR
 from tensorflow_datasets.image_classification.imagenet_resized import ImagenetResized
 from tensorflow_datasets.image_classification.imagenet_v2 import ImagenetV2
 from tensorflow_datasets.image_classification.imagenette import Imagenette

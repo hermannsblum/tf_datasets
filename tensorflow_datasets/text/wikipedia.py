@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Wikipedia dataset containing cleaned articles of all languages."""
 
 import codecs
@@ -92,8 +91,7 @@ _INFO_FILE = "dumpstatus.json"
 class WikipediaConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Wikipedia."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, language=None, date=None, **kwargs):
+  def __init__(self, *, language=None, date=None, **kwargs):
     """BuilderConfig for Wikipedia.
 
     Args:

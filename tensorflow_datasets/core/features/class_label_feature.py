@@ -13,21 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """ClassLabel feature."""
 
 import os
 import six
 import tensorflow.compat.v2 as tf
-from tensorflow_datasets.core import api_utils
 from tensorflow_datasets.core.features import feature
+from tensorflow_datasets.core.utils import type_utils
+
+Json = type_utils.Json
 
 
 class ClassLabel(feature.Tensor):
   """`FeatureConnector` for integer class labels."""
 
-  @api_utils.disallow_positional_args
-  def __init__(self, num_classes=None, names=None, names_file=None):
+  def __init__(self, *, num_classes=None, names=None, names_file=None):
     """Constructs a ClassLabel FeatureConnector.
 
     There are 3 ways to define a ClassLabel, which correspond to the 3
@@ -176,6 +176,16 @@ class ClassLabel(feature.Tensor):
       return str(ex)
     else:
       return f"{ex} ({self.int2str(ex)})"
+
+  @classmethod
+  def from_json_content(cls, value: Json) -> "ClassLabel":
+    return cls(**value)
+
+  def to_json_content(self) -> Json:
+    if self._str2int is not None:
+      return {"names": self.names}
+    else:
+      return {"num_classes": self.num_classes}
 
 
 def _get_names_filepath(data_dir, feature_name):

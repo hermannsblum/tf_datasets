@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """SCAN tasks with various different splits."""
 
 import json
@@ -86,8 +85,7 @@ class ScanConfig(tfds.core.BuilderConfig):
      (unsplit) dataset.
   """
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, name, directory=None, splitfile=None, **kwargs):
+  def __init__(self, *, name, directory=None, splitfile=None, **kwargs):
     """BuilderConfig for SCAN.
 
     Args:

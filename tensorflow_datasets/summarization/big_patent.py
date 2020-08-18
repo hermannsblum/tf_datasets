@@ -13,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """BIGPATENT Dataset."""
 
 import json
 import os
 import re
 
-import importlib_resources
 import tensorflow_datasets.public_api as tfds
 
 _CITATION = """
@@ -73,8 +71,7 @@ _CPC_DESCRIPTION = {
 class BigPatentConfig(tfds.core.BuilderConfig):
   """BuilderConfig for BigPatent."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, cpc_codes=None, **kwargs):
+  def __init__(self, *, cpc_codes=None, **kwargs):
     """BuilderConfig for Wikihow.
 
     Args:
@@ -85,9 +82,11 @@ class BigPatentConfig(tfds.core.BuilderConfig):
         # 1.0.0 lower cased tokenized words.
         # 2.0.0 cased raw strings.
         # 2.1.0 cased raw strings (fixed).
-        version=tfds.core.Version("2.1.0", "Fix update to cased raw strings."),
-        supported_versions=[tfds.core.Version("1.0.0"),
-                            tfds.core.Version("2.0.0")],
+        version=tfds.core.Version("2.1.2", "Fix update to cased raw strings."),
+        supported_versions=[
+            tfds.core.Version("1.0.0", "lower cased tokenized words"),
+            tfds.core.Version("2.0.0", "Update to use cased raw strings")
+        ],
         **kwargs)
     self.cpc_codes = cpc_codes
 
@@ -186,13 +185,14 @@ _ENGLISH_WORDS = None
 
 
 def _get_english_words():
+  """Load dictionary of common english words from NLTK."""
   global _ENGLISH_WORDS
   if not _ENGLISH_WORDS:
     nltk = tfds.core.lazy_imports.nltk
-    resource_path = importlib_resources.files(nltk)
-    data_path = resource_path / "nltk_data/corpora/words/en"
-    _ENGLISH_WORDS = frozenset(
-        nltk.data.load(data_path, format="raw").decode("utf-8").split("\n"))
+    resource_path = tfds.core.utils.resource_path(nltk)
+    data_path = str(resource_path / "nltk_data/corpora/words/en")
+    word_list = nltk.data.load(data_path, format="raw").decode("utf-8")
+    _ENGLISH_WORDS = frozenset(word_list.split("\n"))
   return _ENGLISH_WORDS
 
 

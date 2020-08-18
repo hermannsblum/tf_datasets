@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Cifar-10.1 dataset."""
 
 import numpy as np
@@ -59,8 +58,7 @@ _DATA_OPTIONS = ["v4", "v6"]
 class Cifar10_1Config(tfds.core.BuilderConfig):  # pylint: disable=invalid-name
   """BuilderConfig for Cifar-10.1."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, data=None, **kwargs):
+  def __init__(self, *, data=None, **kwargs):
     """Constructs a Cifar10_1Config.
 
     Args:

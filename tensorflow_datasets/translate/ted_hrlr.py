@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """TED talk high/low-resource paired language data set from Qi, et al. 2018."""
 
 import os
@@ -58,8 +57,7 @@ _VALID_LANGUAGE_PAIRS = (
 class TedHrlrConfig(tfds.core.BuilderConfig):
   """BuilderConfig for TED talk data comparing high/low resource languages."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, language_pair=(None, None), **kwargs):
+  def __init__(self, *, language_pair=(None, None), **kwargs):
     """BuilderConfig for TED talk data comparing high/low resource languages.
 
     The first language in `language_pair` should either be a 2-letter coded

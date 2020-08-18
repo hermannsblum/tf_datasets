@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """WikiHow Datasets."""
 
 import csv
@@ -71,8 +70,7 @@ _URLS = {
 class WikihowConfig(tfds.core.BuilderConfig):
   """BuilderConfig for Wikihow."""
 
-  @tfds.core.disallow_positional_args
-  def __init__(self, filename=None, **kwargs):
+  def __init__(self, *, filename=None, **kwargs):
     """BuilderConfig for Wikihow.
 
     Args:

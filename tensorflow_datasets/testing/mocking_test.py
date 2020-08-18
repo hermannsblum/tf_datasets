@@ -12,15 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# Lint as: python3
 """Tests for tensorflow_datasets.testing.mocking."""
 
 import tensorflow.compat.v2 as tf
 
 from tensorflow_datasets.core import dataset_utils
 from tensorflow_datasets.core import decode
-from tensorflow_datasets.core import registered
+from tensorflow_datasets.core import load
 from tensorflow_datasets.testing import mocking
 from tensorflow_datasets.testing import test_case
 from tensorflow_datasets.testing import test_utils
@@ -39,7 +37,7 @@ class MockingTest(test_case.TestCase):
 
   def test_mocking_imagenet(self):
     with mocking.mock_data():
-      ds = registered.load('imagenet2012', split='train')
+      ds = load.load('imagenet2012', split='train')
       self.assertEqual(ds.element_spec, {
           'file_name': tf.TensorSpec(shape=(), dtype=tf.string),
           'image': tf.TensorSpec(shape=(None, None, 3), dtype=tf.uint8),
@@ -49,7 +47,7 @@ class MockingTest(test_case.TestCase):
 
   def test_mocking_imagenet_decoders(self):
     with mocking.mock_data():
-      ds, ds_info = registered.load(
+      ds, ds_info = load.load(
           'imagenet2012',
           split='train',
           decoders={'image': decode.SkipDecoding()},
@@ -68,13 +66,32 @@ class MockingTest(test_case.TestCase):
 
   def test_mocking_lm1b(self):
     with mocking.mock_data():
-      ds = registered.load('lm1b/bytes', split='train')
+      ds = load.load('lm1b/bytes', split='train')
       self.assertEqual(ds.element_spec, {
           'text': tf.TensorSpec(shape=(None,), dtype=tf.int64),
       })
       for ex in ds.take(10):
         self.assertEqual(ex['text'].dtype, tf.int64)
         ex['text'].shape.assert_is_compatible_with((None,))
+
+  def test_mocking_wider_face(self):
+    with mocking.mock_data():
+      ds = load.load('wider_face', split='train')
+      self.assertEqual(ds.element_spec, {
+          'image': tf.TensorSpec(shape=(None, None, 3), dtype=tf.uint8),
+          'image/filename': tf.TensorSpec(shape=(), dtype=tf.string),
+          'faces': {
+              'bbox': tf.TensorSpec(shape=(None, 4), dtype=tf.float32),
+              'blur': tf.TensorSpec(shape=(None,), dtype=tf.uint8),
+              'expression': tf.TensorSpec(shape=(None,), dtype=tf.bool),
+              'illumination': tf.TensorSpec(shape=(None,), dtype=tf.bool),
+              'occlusion': tf.TensorSpec(shape=(None,), dtype=tf.uint8),
+              'pose': tf.TensorSpec(shape=(None,), dtype=tf.bool),
+              'invalid': tf.TensorSpec(shape=(None,), dtype=tf.bool),
+          }
+      })
+      for ex in ds.take(2):
+        self.assertEqual(ex['faces']['expression'].dtype, tf.bool)
 
   def test_custom_as_dataset(self):
     def _as_dataset(self, *args, **kwargs):  # pylint: disable=unused-argument
@@ -87,13 +104,13 @@ class MockingTest(test_case.TestCase):
       )
 
     with mocking.mock_data(as_dataset_fn=_as_dataset):
-      ds = registered.load('lm1b', split='train')
+      ds = load.load('lm1b', split='train')
       out = [ex['text'] for ex in dataset_utils.as_numpy(ds)]
       self.assertEqual(out, [b'some sentence', b'some other sentence'])
 
   def test_max_values(self):
     with mocking.mock_data(num_examples=50):
-      ds = registered.load('mnist', split='train')
+      ds = load.load('mnist', split='train')
       self.assertEqual(ds.element_spec, {
           'image': tf.TensorSpec(shape=(28, 28, 1), dtype=tf.uint8),
           'label': tf.TensorSpec(shape=(), dtype=tf.int64),
