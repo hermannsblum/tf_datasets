@@ -147,7 +147,12 @@ def _sanitize_url(url, max_length):
       url = url[:-len(extension)]
       break
   else:
-    url, extension = os.path.splitext(url)
+    url_, extension = os.path.splitext(url)
+    # heuristic in case the url does not have an extension
+    if len(extension) > 40:
+      extension = ''
+    else:
+      url = url_
   max_length -= len(extension)
   # Replace non authorized chars (including '/') by '_':
   url = re.sub(r'[^a-zA-Z0-9\.\-_]+', '_', url)

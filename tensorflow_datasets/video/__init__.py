@@ -22,3 +22,4 @@ from tensorflow_datasets.video.starcraft import StarcraftVideo
 from tensorflow_datasets.video.starcraft import StarcraftVideoConfig
 from tensorflow_datasets.video.ucf101 import Ucf101
 from tensorflow_datasets.video.ucf101 import Ucf101Config
+from tensorflow_datasets.video.youtube_boundingboxes import YoutubeBoundingboxes  # TODO(youtube_boundingboxes) Sort alphabetically
